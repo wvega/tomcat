@@ -218,18 +218,18 @@ action :configure do
       notifies :restart, "service[tomcat]"
     end
 
-    cookbook_file "#{new_resource.config_dir}/#{new_resource.ssl_cert_file}" do
+    file "#{new_resource.config_dir}/#{new_resource.ssl_cert_file}" do
       mode '0644'
       notifies :run, "script[create_keystore-#{instance}]"
     end
 
-    cookbook_file "#{new_resource.config_dir}/#{new_resource.ssl_key_file}" do
+    file "#{new_resource.config_dir}/#{new_resource.ssl_key_file}" do
       mode '0644'
       notifies :run, "script[create_keystore-#{instance}]"
     end
 
     new_resource.ssl_chain_files.each do |cert|
-      cookbook_file "#{new_resource.config_dir}/#{cert}" do
+      file "#{new_resource.config_dir}/#{cert}" do
         mode '0644'
         notifies :run, "script[create_keystore-#{instance}]"
       end
@@ -237,7 +237,7 @@ action :configure do
   end
 
   unless new_resource.truststore_file.nil?
-    cookbook_file "#{new_resource.config_dir}/#{new_resource.truststore_file}" do
+    file "#{new_resource.config_dir}/#{new_resource.truststore_file}" do
       mode '0644'
     end
   end
